@@ -12,7 +12,6 @@ from config import init_config
 from urls import handlers
 from ioloop import IOLoop
 
-
 settings = dict(
     template_path=os.path.join(os.path.dirname(__file__), "templates"),
     static_path=os.path.join(os.path.dirname(__file__), "static"),
@@ -20,13 +19,12 @@ settings = dict(
 
 
 class Application(tornado.web.Application):
-
     def __init__(self):
         tornado.web.Application.__init__(self, handlers, **settings)
 
 
-def welcome():
-    print '''
+def welcome(port):
+    print('''
 Welcome to the webssh!
                 __              __
  _      _____  / /_  __________/ /_
@@ -34,9 +32,9 @@ Welcome to the webssh!
 | |/ |/ /  __/ /_/ (__  |__  ) / / /
 |__/|__/\___/_.___/____/____/_/ /_/
 
-Webssh now start~
-Please visit the localhost:9527 from the explorer~
-    '''
+Now start~
+Please visit the localhost:%s from the explorer~
+    ''' % port)
 
 
 def main():
@@ -46,7 +44,7 @@ def main():
     http_server = tornado.httpserver.HTTPServer(Application())
     http_server.listen(options.port)
     IOLoop.instance().start()
-    welcome()
+    welcome(options.port)
     tornado.ioloop.IOLoop.instance().start()
 
 
